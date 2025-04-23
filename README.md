@@ -55,6 +55,7 @@ Logger[logger_name]: {dict of all initialized loggers from sub modules}
 Logger.loggers() = [list of logger names]
 logger_instance = Logger[logger_name]
 logger_instance.set_handler_level(handler_name, level)
+logger_instance.add_file_handler(new_file_handler, level=level)
 
 Clear log files
 logger.clear_todays_logs()

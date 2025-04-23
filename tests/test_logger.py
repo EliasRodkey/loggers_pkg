@@ -252,3 +252,6 @@ class TestLogger:
 
         # Delete loggers after test
         Logger._del_logger(TEST_LOGGER_NAME_1)
+
+
+        #TODO: Add tests for dictionary like behavior and handler level setting
