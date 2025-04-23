@@ -94,7 +94,24 @@ class Logger:
         
         # Mark the instance as initialized to avoid re-initialization
         self._initialized = True
+    
+    @classmethod
+    def get_logger(cls, name: str) -> 'Logger':
+        """
+        Allows for easy access to the logger instance using the class name as a dictionary
 
+        Args:
+            cls: refers to the class itself, always an argument in the __new__ method for classes
+                (like self for __init__ method)  
+            name (str): the name of the logger instance being created, will be added to _instances{}
+        
+        Returns:
+            Logger instance
+        """
+        if name in cls._instances:
+            return cls._instances[name]
+        raise KeyError(f"Logger instance with name '{name}' does not exist.")
+    
 
     @classmethod
     def set_run_name(cls, run_name: str) -> None:
@@ -106,6 +123,17 @@ class Logger:
         """
         cls._run_id = compose_global_run_id(run_name)
 
+
+    @classmethod
+    def keys(cls) -> list:
+        """
+        Returns the keys of the _instances dictionary
+
+        Returns:
+            list[str] logger names
+        """
+        return cls._instances.keys()
+    
 
     @classmethod
     def _get_instances(cls) -> dict:
@@ -148,12 +176,14 @@ class Logger:
         Args:
             name (str): the name of the logger to be deleted
         """
-        if name in cls._instances.keys():
+        if name in cls.keys():
             logger = cls._instances[name]
 
             # Properly remove and close all handlers
             for handler in list(logger.logger.handlers):  # Use list() to avoid modifying the list while iterating
                 logger.logger.removeHandler(handler)  # Detach the handler from the logger
+            
+            logger.logger.handlers.clear()  # Clear the handlers list to free up resources
 
             del cls._instances[name]
     
@@ -167,11 +197,6 @@ class Logger:
             str
         """
         return self._get_run_id()
-
-
-    def get_logger(self):
-        """Retrives the new logger instance"""
-        return self.logger
 
 
     def add_console_handler(
@@ -433,33 +458,6 @@ class Logger:
             message (str): the message to be logged
         """
         self.logger.critical(message)
-
-    
-    @classmethod
-    def loggers(cls) -> list:
-        """
-        Returns the keys of the _instances dictionary
-
-        Returns:
-            list[str] logger names
-        """
-        return cls._instances.keys()
-    
-
-    @classmethod
-    def __getitem__(cls, name: str) -> 'Logger':
-        """
-        Allows for easy access to the logger instance using the class name as a dictionary
-
-        Args:
-            cls: refers to the class itself, always an argument in the __new__ method for classes
-                (like self for __init__ method)  
-            name (str): the name of the logger instance being created, will be added to _instances{}
-        
-        Returns:
-            Logger instance
-        """
-        return cls._instances[name]
 
 
 if __name__ == "__main__":

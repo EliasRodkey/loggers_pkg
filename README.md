@@ -51,9 +51,9 @@ logger.error(message)
 logger.critical(message)
 
 Set message levels at a high level using _instances After importing other modules
-Logger[logger_name]: {dict of all initialized loggers from sub modules}
+Logger.get_logger(logger_name) returns logger_instance
 Logger.loggers() = [list of logger names]
-logger_instance = Logger[logger_name]
+logger_instance = Logger.get_logger(logger_name)
 logger_instance.set_handler_level(handler_name, level)
 logger_instance.add_file_handler(new_file_handler, level=level)
 

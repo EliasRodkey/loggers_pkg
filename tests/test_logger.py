@@ -26,13 +26,30 @@ class TestLogger:
     """Unit tests for Logger."""
 
 
+    def test_get_logger(self):
+        """Test if the logger behaves like a dictionary."""
+        logger = Logger(TEST_LOGGER_NAME_1)
+
+        # Add a file handler with a specific name and level
+        logger.add_file_handler('file_1', level=Logger.DEBUG)
+
+        # Check if the handler exists in the logger's _instance keys
+        assert TEST_LOGGER_NAME_1 in Logger.keys()
+
+        # Check if the logger behaves like a dictionary
+        assert Logger.get_logger(TEST_LOGGER_NAME_1) == logger
+
+        # Delete loggers after test
+        Logger._del_logger(TEST_LOGGER_NAME_1)
+
+
     def test_del_logger(self):
         """Test if logger is deleted."""
         logger_1 = Logger(TEST_LOGGER_NAME_1)
         logger_2 = Logger(TEST_LOGGER_NAME_2)
 
-        assert Logger._instances[TEST_LOGGER_NAME_1] == logger_1
-        assert Logger._instances[TEST_LOGGER_NAME_2] == logger_2
+        assert Logger.get_logger(TEST_LOGGER_NAME_1) == logger_1
+        assert Logger.get_logger(TEST_LOGGER_NAME_2) == logger_2
 
         # Delete the first loggers
         Logger._del_logger(TEST_LOGGER_NAME_1)
