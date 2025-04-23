@@ -272,7 +272,24 @@ class Logger:
             self.logger.removeHandler(self.handlers[handler_name])
             del self.handlers[handler_name]
         else:
-            self.logger.warning(f'remove_handler error: Handler {handler_name} does not exist in logger {self.name}')
+            self.logger.warning(f'Logger.remove_handler() -> Handler {handler_name} does not exist in logger {self.name}')
+
+
+    def set_handler_level(self, handler_name: str, level: int) -> None:
+        """
+        Sets the logging level for a specific handler
+
+        Args:
+            handler_name (str): the name of the handler to be modified
+            level (int): the new logging level for the handler
+        """
+
+        # Check if the handler exists in the current instance
+        if self._handler_exists(handler_name):
+            # Set the new logging level for the handler
+            self.handlers[handler_name].setLevel(level)
+        else:
+            self.logger.warning(f'Logger.set_handler_level() -> Handler {handler_name} does not exist in logger {self.name}')
 
 
     def clear_todays_logs(self) -> None:

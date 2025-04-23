@@ -30,8 +30,10 @@ PerformanceLogger: tracks program performance (execution time)
 Import Logger class:
 from loggers import Logger
 
-Set the overall run name at the top level of your program:
+Set the overall run name at the top level of your program.
+Use this as the very first import to exforce across instances
 Logger.set_run_name(run_name)
+
 
 Create Logger instane:
 logger = Logger(logger_name)
